@@ -45,16 +45,22 @@ const teamMembers: TeamMember[] = [
         gradient: "from-blue-400 to-indigo-500",
     },
     {
-        name: "Hetal",
+        name: "Devanshi Barot",
         role: "Co-ordinator",
-        initials: "H",
+        initials: "DB",
         gradient: "from-pink-400 to-rose-500",
     },
     {
-        name: "Devanshi",
+        name: "Hetal Chavda",
         role: "Co-ordinator",
-        initials: "D",
+        initials: "HC",
         gradient: "from-violet-400 to-purple-500",
+    },
+    {
+        name: "Janvi Nankani",
+        role: "Co-ordinator",
+        initials: "JN",
+        gradient: "from-fuchsia-400 to-pink-500",
     },
     {
         name: "Disha Rathod",
