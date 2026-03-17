@@ -142,7 +142,8 @@ export function AdminScanner() {
             );
             setIsCameraActive(true);
         } catch (err) {
-            setScanResult({ status: "invalid_qr", message: "Could not access camera." });
+            console.error("Camera start error:", err);
+            setScanResult({ status: "invalid_qr", message: "Could not access camera. Please check permissions." });
         }
     };
 
@@ -191,20 +192,25 @@ export function AdminScanner() {
 
                 {mode === "camera" && (
                     <motion.div className="mb-8 p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl">
-                        {!isCameraActive && !scanResult ? (
-                            <div className="text-center py-8">
-                                <Camera className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                                <motion.button onClick={startCamera} className="px-8 py-4 bg-gradient-to-r from-green-500 to-cyan-500 rounded-xl flex items-center gap-3 mx-auto"><Camera className="w-6 h-6" /> Start Camera</motion.button>
-                            </div>
-                        ) : isCameraActive ? (
-                            <div>
-                                <div className="flex items-center justify-between mb-4">
-                                    <span className="text-green-300 text-sm">Camera Active</span>
-                                    <button onClick={stopCamera} className="px-3 py-1.5 bg-red-500/20 text-red-300 rounded-lg"><CameraOff className="w-4 h-4" /></button>
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="text-green-300 text-sm">
+                                {isCameraActive ? "Camera Active" : "Camera Scan"}
+                            </span>
+                            {isCameraActive && (
+                                <button onClick={stopCamera} className="px-3 py-1.5 bg-red-500/20 text-red-300 rounded-lg"><CameraOff className="w-4 h-4" /></button>
+                            )}
+                        </div>
+                        <div className="relative mx-auto rounded-2xl overflow-hidden bg-white/5" style={{ maxWidth: 400, minHeight: 250 }}>
+                            <div id="qr-reader" className="w-full" />
+                            {!isCameraActive && !scanResult && (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 backdrop-blur-sm">
+                                    <Camera className="w-12 h-12 text-gray-500 mb-4" />
+                                    <button onClick={startCamera} className="px-6 py-3 bg-gradient-to-r from-green-500 to-cyan-500 rounded-xl flex items-center gap-2">
+                                        <Camera className="w-5 h-5" /> Start Camera
+                                    </button>
                                 </div>
-                                <div id="qr-reader" className="rounded-2xl overflow-hidden mx-auto" style={{ maxWidth: 400 }} />
-                            </div>
-                        ) : null}
+                            )}
+                        </div>
                     </motion.div>
                 )}
 
