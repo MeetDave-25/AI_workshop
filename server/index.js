@@ -15,8 +15,10 @@ app.post("/api/auth/login", async (req, res) => {
     const { isStudent, identifier, password } = req.body;
 
     if (!isStudent) {
-        // Admin login
-        if (identifier === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+        const validUsername = process.env.ADMIN_USERNAME || "admin";
+        const validPassword = process.env.ADMIN_PASSWORD || "admin123";
+
+        if (identifier === validUsername && password === validPassword) {
             return res.json({ success: true, user: { role: "admin", name: "Administrator" } });
         }
         return res.status(401).json({ success: false, message: "Invalid admin credentials" });
