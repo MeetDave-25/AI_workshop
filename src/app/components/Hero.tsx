@@ -7,12 +7,12 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Animated starfield background */}
       <Stars />
-      
+
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-black pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-      
+
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
         <motion.div
@@ -22,7 +22,7 @@ export function Hero() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-sm border border-cyan-500/30 rounded-full">
             <Sparkles className="w-4 h-4 text-cyan-400" />
-            <span className="text-sm text-cyan-300">March 2026</span>
+            <span className="text-sm text-cyan-300">March</span>
           </div>
         </motion.div>
 
@@ -34,7 +34,7 @@ export function Hero() {
         >
           AI Powered Creators
           <br />
-          <span className="text-4xl md:text-6xl lg:text-7xl">Bootcamp 2026</span>
+          <span className="text-4xl md:text-6xl lg:text-7xl">Bootcamp</span>
         </motion.h1>
 
         <motion.p

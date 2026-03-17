@@ -19,15 +19,18 @@ export function Footer() {
             </h3>
             <Sparkles className="w-6 h-6 text-purple-400" />
           </div>
-          
+
           <p className="text-gray-400 mb-6">
             Transform your ideas into cinematic reality with the power of AI
           </p>
-          
+
           <div className="w-32 h-1 mx-auto bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full mb-6" />
-          
-          <p className="text-sm text-gray-500">
-            © 2026 AI Powered Creators Bootcamp. All rights reserved.
+
+          <p className="text-sm text-gray-500 mb-2">
+            © AI Powered Creators Bootcamp. All rights reserved.
+          </p>
+          <p className="text-sm text-gray-400">
+            Created and Developed by <span className="text-cyan-400 font-medium">Meet G. Dave</span>
           </p>
         </motion.div>
       </div>

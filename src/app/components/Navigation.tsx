@@ -35,8 +35,8 @@ export function Navigation() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-black/80 backdrop-blur-lg border-b border-white/10 shadow-lg"
-          : "bg-transparent"
+        ? "bg-black/80 backdrop-blur-lg border-b border-white/10 shadow-lg"
+        : "bg-transparent"
         }`}
     >
       <div className="container mx-auto px-4 max-w-7xl">
@@ -45,7 +45,7 @@ export function Navigation() {
           <a href="/" className="flex items-center gap-2 group">
             <Sparkles className="w-6 h-6 text-cyan-400 group-hover:text-purple-400 transition-colors" />
             <span className="text-xl bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
-              AI Bootcamp 2026
+              AI Bootcamp
             </span>
           </a>
 
