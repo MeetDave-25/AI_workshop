@@ -46,6 +46,27 @@ export function AttendanceTicket() {
         }
     }, [currentUser]);
 
+    // Auto-refresh ticket status when a ticket is displayed
+    useEffect(() => {
+        if (!generatedTicket || generatedTicket.is_scanned) return;
+
+        const interval = setInterval(() => {
+            loadMyTickets();
+        }, 3000); // Refresh every 3 seconds
+
+        return () => clearInterval(interval);
+    }, [generatedTicket]);
+
+    // Update displayed ticket when myTickets changes
+    useEffect(() => {
+        if (generatedTicket && myTickets.length > 0) {
+            const updatedTicket = myTickets.find((t) => t.ticket_id === generatedTicket.ticket_id);
+            if (updatedTicket) {
+                setGeneratedTicket(updatedTicket);
+            }
+        }
+    }, [myTickets]);
+
     const loadMyTickets = async () => {
         if (!currentUser?.email) return;
         try {
@@ -394,14 +415,28 @@ export function AttendanceTicket() {
                                         </p>
                                     </div>
 
-                                    <motion.button
-                                        onClick={() => setGeneratedTicket(null)}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="mt-6 w-full py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white hover:bg-white/20 transition-all"
-                                    >
-                                        Back
-                                    </motion.button>
+                                    <div className="flex gap-3 mt-6">
+                                        <motion.button
+                                            onClick={() => loadMyTickets()}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 backdrop-blur-sm border border-indigo-400/30 rounded-xl text-white hover:shadow-lg hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                            </svg>
+                                            Refresh Status
+                                        </motion.button>
+
+                                        <motion.button
+                                            onClick={() => setGeneratedTicket(null)}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="flex-1 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white hover:bg-white/20 transition-all"
+                                        >
+                                            Back
+                                        </motion.button>
+                                    </div>
                                 </div>
                             </motion.div>
                         )}
