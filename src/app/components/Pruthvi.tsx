@@ -184,7 +184,7 @@ export function Pruthvi() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 200, scale: 0.5 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40"
+            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 scale-75 md:scale-100 origin-bottom-right"
           >
             <motion.button
               onClick={handleCharacterClick}
@@ -327,7 +327,7 @@ export function Pruthvi() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[calc(100vw-2rem)] md:w-full md:max-w-md h-[65vh] md:max-h-[90vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
+            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[calc(100vw-2rem)] md:w-full md:max-w-md h-[55vh] sm:h-[50vh] md:max-h-[85vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
           >
             {/* Header with Character */}
             <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-2 md:p-4 flex items-center justify-between gap-2">
@@ -362,7 +362,7 @@ export function Pruthvi() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-2 md:p-4 space-y-2 md:space-y-3 bg-black/50 min-h-32 md:min-h-56">
+            <div className="flex-1 overflow-y-auto p-2 md:p-4 space-y-2 md:space-y-3 bg-black/50 min-h-24 md:min-h-56">
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
@@ -371,7 +371,7 @@ export function Pruthvi() {
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`px-4 py-3 rounded-2xl text-sm font-medium whitespace-pre-wrap leading-relaxed ${
+                    className={`px-4 py-3 rounded-2xl text-xs md:text-sm font-medium whitespace-pre-wrap leading-relaxed max-w-[90%] md:max-w-xs ${
                       msg.sender === "user"
                         ? "max-w-xs bg-gradient-to-r from-cyan-500/50 to-blue-500/50 text-cyan-50 rounded-br-none border border-cyan-400/50"
                         : "max-w-sm bg-gradient-to-r from-blue-600/40 to-indigo-600/40 text-blue-50 rounded-bl-none border border-blue-400/50"
@@ -385,16 +385,16 @@ export function Pruthvi() {
             </div>
 
             {/* Quick Question Buttons */}
-            <div className="px-2 md:px-3 py-2 bg-black/60 border-t border-cyan-400/20">
-              <p className="text-xs text-gray-400 mb-2 px-1">Quick Questions:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
+            <div className="px-2 md:px-3 py-2 bg-black/60 border-t border-cyan-400/20 max-h-[35vh] md:max-h-auto overflow-y-auto">
+              <p className="text-xs text-gray-400 mb-1.5 px-1 hidden md:block">Quick Questions:</p>
+              <div className="grid grid-cols-2 md:grid-cols-2 gap-1 md:gap-2">
                 {QUICK_QUESTIONS.map((q, idx) => (
                   <motion.button
                     key={idx}
                     onClick={() => handleQuickQuestion(q.query)}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="text-xs bg-gradient-to-r from-blue-600/40 to-indigo-600/40 hover:from-blue-600/60 hover:to-indigo-600/60 text-blue-100 px-2 md:px-3 py-2 rounded-lg border border-blue-400/40 transition-all font-medium"
+                    className="text-xs bg-gradient-to-r from-blue-600/40 to-indigo-600/40 hover:from-blue-600/60 hover:to-indigo-600/60 text-blue-100 px-2 py-1.5 md:py-2 rounded-lg border border-blue-400/40 transition-all font-medium line-clamp-2"
                   >
                     {q.label}
                   </motion.button>
@@ -403,7 +403,7 @@ export function Pruthvi() {
             </div>
 
             {/* Input */}
-            <div className="border-t border-cyan-400/30 p-2 md:p-3 bg-black/70 flex gap-1 md:gap-2 items-center">
+            <div className="border-t border-cyan-400/30 p-1.5 md:p-3 bg-black/70 flex gap-1 md:gap-2 items-center">
               <input
                 type="text"
                 value={inputValue}
