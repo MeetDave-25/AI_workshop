@@ -203,7 +203,7 @@ export function Pruthvi() {
 
                 {/* Image Container */}
                 <img
-                  src="/prithvi.jpeg"
+                  src="/p_ai.jpeg"
                   alt="Pruthvi"
                   className="w-full h-full rounded-full object-cover border-4 border-cyan-400 shadow-2xl shadow-cyan-500/50"
                 />
@@ -239,7 +239,7 @@ export function Pruthvi() {
                 <motion.img
                   animate={{ rotate: [0, 5, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  src="/prithvi.jpeg"
+                  src="/p_ai.jpeg"
                   alt="Pruthvi"
                   className="w-10 md:w-14 h-10 md:h-14 rounded-full object-cover border-3 border-white shadow-lg flex-shrink-0"
                 />
