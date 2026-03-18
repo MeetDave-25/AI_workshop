@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./db.js";
+import { initDB } from "./schema.js";
 import multer from "multer";
 import * as xlsx from "xlsx";
 
@@ -12,6 +13,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Initialize database tables
+await initDB();
 
 // --- AUTHENTICATION ---
 

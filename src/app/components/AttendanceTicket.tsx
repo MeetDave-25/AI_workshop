@@ -208,17 +208,17 @@ export function AttendanceTicket() {
                                                     onClick={() => !alreadyClaimed && setSelectedDay(d.day)}
                                                     whileHover={!alreadyClaimed ? { scale: 1.05 } : {}}
                                                     whileTap={!alreadyClaimed ? { scale: 0.95 } : {}}
-                                                    className={`relative p-4 rounded-xl border transition-all duration-300 \${alreadyClaimed
+                                                    className={`relative p-4 rounded-xl border transition-all duration-300 ${alreadyClaimed
                             ? "bg-green-500/10 border-green-500/30 cursor-default"
                             : selectedDay === d.day
-                              ? \`bg-gradient-to-br \${d.color} border-transparent shadow-lg\`
+                              ? `bg-gradient-to-br ${d.color} border-transparent shadow-lg`
                               : "bg-white/5 border-white/20 hover:border-white/40"
-                            \}`}
+                            }`}
                                                 >
-                                                    <p className={`text-lg font-bold \${alreadyClaimed ? "text-green-300" : "text-white"}`}>
+                                                    <p className={`text-lg font-bold ${alreadyClaimed ? "text-green-300" : "text-white"}`}>
                                                         {d.label}
                                                     </p>
-                                                    <p className={`text-xs mt-1 \${alreadyClaimed ? "text-green-400" : "text-white/70"}`}>
+                                                    <p className={`text-xs mt-1 ${alreadyClaimed ? "text-green-400" : "text-white/70"}`}>
                                                         {alreadyClaimed ? "✓ Marked" : d.theme}
                                                     </p>
                                                 </motion.button>
@@ -382,7 +382,7 @@ export function AttendanceTicket() {
                                     </div>
 
                                     <div
-                                        className={`p-4 \${generatedTicket.is_scanned
+                                        className={`p-4 ${generatedTicket.is_scanned
                       ? "bg-green-500/10 border-green-500/30"
                       : "bg-blue-500/10 border-blue-500/30"
                       } border rounded-xl text-center`}
