@@ -49,7 +49,7 @@ export function AttendanceTicket() {
     const loadMyTickets = async () => {
         if (!currentUser?.email) return;
         try {
-            const res = await fetch(`/api/attendance/my?email=\${encodeURIComponent(currentUser.email)}`);
+            const res = await fetch(`/api/attendance/my?email=${encodeURIComponent(currentUser.email)}`);
             if (res.ok) {
                 const data = await res.json();
                 setMyTickets(data);
@@ -69,7 +69,7 @@ export function AttendanceTicket() {
 
         const alreadyClaimed = myTickets.find((t) => t.day === selectedDay);
         if (alreadyClaimed) {
-            setError(`You already marked attendance for Day \${selectedDay}!`);
+            setError(`You already marked attendance for Day ${selectedDay}!`);
             setGeneratedTicket(alreadyClaimed);
             return;
         }
