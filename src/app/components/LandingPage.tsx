@@ -17,7 +17,9 @@ export function LandingPage() {
         <div className="min-h-screen bg-black text-white overflow-x-hidden">
             <Navigation />
             <Hero />
-            <About />
+            <div id="about">
+                <About />
+            </div>
             <Structure />
             <div id="workflow">
                 <Workflow />
@@ -29,10 +31,16 @@ export function LandingPage() {
             <div id="certification">
                 <Certification />
             </div>
-            <PromptsSection />
+            <div id="prompts">
+                <PromptsSection />
+            </div>
             <AttendanceTicket />
-            <FoodCoupon />
-            <Team />
+            <div id="coupon">
+                <FoodCoupon />
+            </div>
+            <div id="team">
+                <Team />
+            </div>
             <Footer />
         </div>
     );

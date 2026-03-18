@@ -30,18 +30,6 @@ export function Navigation() {
     setIsOpen(false);
   };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    handleNavClick();
-    // Small delay to ensure menu animation completes
-    setTimeout(() => {
-      const href = e.currentTarget.getAttribute("href");
-      if (href?.startsWith("#")) {
-        const element = document.querySelector(href);
-        element?.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  };
-
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -143,7 +131,7 @@ export function Navigation() {
                 <motion.a
                   key={item.href}
                   href={item.href}
-                  onClick={handleLinkClick}
+                  onClick={handleNavClick}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
