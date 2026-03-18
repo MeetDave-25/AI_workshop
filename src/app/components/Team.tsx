@@ -7,6 +7,7 @@ interface TeamMember {
     specialty?: string;
     initials: string;
     gradient: string;
+    image?: string;
 }
 
 const instructor: TeamMember = {
@@ -15,6 +16,7 @@ const instructor: TeamMember = {
     specialty: "Lead Instructor",
     initials: "PJ",
     gradient: "from-amber-400 via-orange-500 to-red-500",
+    image: "/parth.jpeg",
 };
 
 const teamMembers: TeamMember[] = [
@@ -24,6 +26,7 @@ const teamMembers: TeamMember[] = [
         specialty: "Character Generation",
         initials: "PP",
         gradient: "from-cyan-400 to-blue-500",
+        image: "/parth_p.jpeg",
     },
     {
         name: "Meet Dave",
@@ -31,18 +34,21 @@ const teamMembers: TeamMember[] = [
         specialty: "Vibe-coding",
         initials: "MD",
         gradient: "from-purple-400 to-pink-500",
+        image: "/meet.jpeg",
     },
     {
         name: "Pruthvi Miyatra",
         role: "Co-ordinator",
         initials: "PM",
         gradient: "from-green-400 to-emerald-500",
+        image: "/prithvi.jpeg",
     },
     {
         name: "Dhyey Trivedi",
         role: "Co-ordinator",
         initials: "DT",
         gradient: "from-blue-400 to-indigo-500",
+        image: "/dhyey.jpeg",
     },
     {
         name: "Devanshi Barot",
@@ -61,12 +67,14 @@ const teamMembers: TeamMember[] = [
         role: "Co-ordinator",
         initials: "JN",
         gradient: "from-fuchsia-400 to-pink-500",
+        image: "/janvi.jpeg",
     },
     {
         name: "Disha Rathod",
         role: "Co-ordinator",
         initials: "DR",
         gradient: "from-teal-400 to-cyan-500",
+        image: "/disha.jpeg",
     },
 ];
 
@@ -128,11 +136,19 @@ export function Team() {
                             {/* Avatar */}
                             <motion.div
                                 whileHover={{ scale: 1.1 }}
-                                className={`w-28 h-28 mx-auto mb-6 rounded-full bg-gradient-to-br ${instructor.gradient} flex items-center justify-center shadow-2xl shadow-amber-500/30 ring-4 ring-amber-500/30`}
+                                className={`w-28 h-28 mx-auto mb-6 rounded-full bg-gradient-to-br ${instructor.gradient} flex items-center justify-center shadow-2xl shadow-amber-500/30 ring-4 ring-amber-500/30 overflow-hidden`}
                             >
-                                <span className="text-3xl font-bold text-white">
-                                    {instructor.initials}
-                                </span>
+                                {instructor.image ? (
+                                    <img
+                                        src={instructor.image}
+                                        alt={instructor.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <span className="text-3xl font-bold text-white">
+                                        {instructor.initials}
+                                    </span>
+                                )}
                             </motion.div>
 
                             <h3 className="text-2xl md:text-3xl mb-2 text-white font-semibold">
@@ -174,11 +190,19 @@ export function Team() {
                                     {/* Avatar */}
                                     <motion.div
                                         whileHover={{ scale: 1.1, rotate: 5 }}
-                                        className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${member.gradient} flex items-center justify-center shadow-lg`}
+                                        className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${member.gradient} flex items-center justify-center shadow-lg overflow-hidden`}
                                     >
-                                        <span className="text-lg font-bold text-white">
-                                            {member.initials}
-                                        </span>
+                                        {member.image ? (
+                                            <img
+                                                src={member.image}
+                                                alt={member.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <span className="text-lg font-bold text-white">
+                                                {member.initials}
+                                            </span>
+                                        )}
                                     </motion.div>
 
                                     <h4 className="text-base md:text-lg mb-2 text-white font-medium">

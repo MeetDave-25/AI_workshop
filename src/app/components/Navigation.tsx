@@ -30,6 +30,18 @@ export function Navigation() {
     setIsOpen(false);
   };
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    handleNavClick();
+    // Small delay to ensure menu animation completes
+    setTimeout(() => {
+      const href = e.currentTarget.getAttribute("href");
+      if (href?.startsWith("#")) {
+        const element = document.querySelector(href);
+        element?.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -124,14 +136,14 @@ export function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/10"
+            className="md:hidden bg-black/95 backdrop-blur-lg border-t border-white/10 w-full"
           >
-            <div className="container mx-auto px-4 py-6 space-y-4">
+            <div className="px-4 py-6 space-y-4 max-w-7xl mx-auto">
               {navItems.map((item, index) => (
                 <motion.a
                   key={item.href}
                   href={item.href}
-                  onClick={handleNavClick}
+                  onClick={handleLinkClick}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
