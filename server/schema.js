@@ -1,9 +1,10 @@
 import pool from "./db.js";
 
 export async function initDB() {
-  const client = await pool.connect();
   try {
-    await client.query(`
+    const client = await pool.connect();
+    try {
+      await client.query(`
       CREATE TABLE IF NOT EXISTS students (
         id SERIAL PRIMARY KEY,
         booking_id VARCHAR(50),
@@ -53,8 +54,12 @@ export async function initDB() {
         created_at TIMESTAMP DEFAULT NOW()
       );
     `);
-    console.log("✅ Database tables initialized");
-  } finally {
-    client.release();
+      console.log("✅ Database tables initialized");
+    } finally {
+      client.release();
+    }
+  } catch (err) {
+    console.error("❌ Database initialization error:", err.message);
+    throw err;
   }
 }

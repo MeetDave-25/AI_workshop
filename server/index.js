@@ -14,9 +14,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Initialize database tables
-await initDB();
-
 // --- AUTHENTICATION ---
 
 app.post("/api/auth/login", async (req, res) => {
@@ -375,10 +372,23 @@ app.delete("/api/prompts/:id", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-if (process.env.NODE_ENV !== "production") {
-    app.listen(PORT, () => {
-        console.log(`🚀 API Server running on http://localhost:${PORT}`);
-    });
+
+async function startServer() {
+    try {
+        // Initialize database tables
+        await initDB();
+        
+        if (process.env.NODE_ENV !== "production") {
+            app.listen(PORT, () => {
+                console.log(`🚀 API Server running on http://localhost:${PORT}`);
+            });
+        }
+    } catch (err) {
+        console.error("❌ Failed to start server:", err);
+        process.exit(1);
+    }
 }
+
+startServer();
 
 export default app;
