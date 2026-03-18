@@ -2,8 +2,12 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./db.js";
+import multer from "multer";
+import * as xlsx from "xlsx";
 
 dotenv.config();
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const app = express();
 app.use(cors());
@@ -49,6 +53,123 @@ app.post("/api/auth/login", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: "Database error" });
+    }
+});
+
+// --- ADMIN STUDENTS ---
+
+app.get("/api/admin/students", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM students ORDER BY created_at DESC");
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching students" });
+    }
+});
+
+app.delete("/api/admin/students/clear", async (req, res) => {
+    try {
+        await pool.query("TRUNCATE TABLE students CASCADE");
+        res.json({ success: true, message: "All students deleted successfully" });
+    } catch (err) {
+        console.error("Error clearing students:", err);
+        res.status(500).json({ success: false, message: "Error clearing database" });
+    }
+});
+
+app.post("/api/admin/students", async (req, res) => {
+    const { name, email, phone, college, semester, ticket_type, booking_id } = req.body;
+
+    if (!name || !email || !phone) {
+        return res.status(400).json({ success: false, message: "Name, email, and phone are required" });
+    }
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO students (name, email, phone, college, semester, ticket_type, booking_id) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+            [name, email.toLowerCase().trim(), phone.trim(), college, semester, ticket_type, booking_id]
+        );
+        res.json({ success: true, student: result.rows[0] });
+    } catch (err) {
+        if (err.constraint === 'students_email_key') {
+            return res.status(400).json({ success: false, message: "Student with this email already exists" });
+        }
+        console.error(err);
+        res.status(500).json({ success: false, message: "Database error" });
+    }
+});
+
+app.post("/api/admin/students/bulk", upload.single("file"), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: "No file uploaded" });
+    }
+
+    try {
+        const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+        let successCount = 0;
+        let errors = [];
+
+        // Simple validation mapping function to find expected headers loosely
+        const findField = (row, possibleNames) => {
+            const rowKeys = Object.keys(row);
+            for (let k of rowKeys) {
+                if (possibleNames.some(pn => k.toLowerCase().includes(pn.toLowerCase()))) {
+                    return row[k];
+                }
+            }
+            return null;
+        };
+
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i];
+
+            const name = findField(row, ["name", "first name", "full name"]) || "";
+            const email = findField(row, ["email", "e-mail", "mail"]) || "";
+            const phone = findField(row, ["phone", "mobile", "contact", "number", "no"]) || "";
+            const college = findField(row, ["college", "university", "institute", "school"]) || "";
+            const semester = findField(row, ["semester", "sem", "year", "branch"]) || "";
+            const ticket_type = findField(row, ["ticket", "type", "pass"]) || "General";
+            const booking_id = findField(row, ["booking", "order", "id"]) || "";
+
+            const phoneStr = phone !== null && phone !== undefined ? String(phone).trim() : "";
+            const emailStr = email ? String(email).toLowerCase().trim() : "";
+
+            if (!name || !emailStr || !phoneStr) {
+                errors.push({ row: i + 2, message: `Missing required fields (Name, Email, or Phone)` });
+                continue;
+            }
+
+            try {
+                // Try inserting
+                await pool.query(
+                    `INSERT INTO students (name, email, phone, college, semester, ticket_type, booking_id) 
+                     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                    [name, emailStr, phoneStr, String(college), String(semester), String(ticket_type), String(booking_id)]
+                );
+                successCount++;
+            } catch (err) {
+                if (err.constraint === 'students_email_key') {
+                    errors.push({ row: i + 2, email: emailStr, message: "Email already exists" });
+                } else {
+                    errors.push({ row: i + 2, email: emailStr, message: err.message || "Insert failed" });
+                }
+            }
+        }
+
+        res.json({
+            success: true,
+            message: `Processed ${data.length} rows. Added ${successCount} successfully.`,
+            successCount,
+            errors
+        });
+
+    } catch (err) {
+        console.error("Bulk upload error:", err);
+        res.status(500).json({ success: false, message: "Error processing file. Ensure it's a valid CSV/Excel." });
     }
 });
 

@@ -10,10 +10,11 @@ import {
     Shield,
     BarChart3,
     LogOut,
+    Users,
 } from "lucide-react";
 
 export function AdminDashboard() {
-    const [stats, setStats] = useState({ totalCoupons: 0, usedCoupons: 0, totalPrompts: 0 });
+    const [stats, setStats] = useState({ totalCoupons: 0, usedCoupons: 0, totalPrompts: 0, totalStudents: 0 });
     const { isAdmin, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -25,14 +26,16 @@ export function AdminDashboard() {
 
         const fetchStats = async () => {
             try {
-                const [couponsRes, promptsRes] = await Promise.all([
+                const [couponsRes, promptsRes, studentsRes] = await Promise.all([
                     fetch('/api/admin/coupons'),
-                    fetch('/api/prompts')
+                    fetch('/api/prompts'),
+                    fetch('/api/admin/students')
                 ]);
 
                 let totalCoupons = 0;
                 let usedCoupons = 0;
                 let totalPrompts = 0;
+                let totalStudents = 0;
 
                 if (couponsRes.ok) {
                     const couponsData = await couponsRes.json();
@@ -45,7 +48,12 @@ export function AdminDashboard() {
                     totalPrompts = promptsData.length;
                 }
 
-                setStats({ totalCoupons, usedCoupons, totalPrompts });
+                if (studentsRes.ok) {
+                    const studentsData = await studentsRes.json();
+                    totalStudents = studentsData.length;
+                }
+
+                setStats({ totalCoupons, usedCoupons, totalPrompts, totalStudents });
             } catch (err) {
                 console.error("Failed to fetch admin stats", err);
             }
@@ -77,6 +85,14 @@ export function AdminDashboard() {
             gradient: "from-purple-400 to-pink-500",
             shadowColor: "shadow-purple-500/20",
             path: "/admin/prompts",
+        },
+        {
+            title: "Student Management",
+            description: "Register and manage students",
+            icon: Users,
+            gradient: "from-blue-400 to-indigo-500",
+            shadowColor: "shadow-blue-500/20",
+            path: "/admin/students",
         },
     ];
 
@@ -127,8 +143,13 @@ export function AdminDashboard() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="grid grid-cols-3 gap-4 mb-12"
+                    className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
                 >
+                    <div className="p-5 bg-white/5 border border-white/10 rounded-2xl text-center">
+                        <Users className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                        <p className="text-3xl font-bold text-white">{stats.totalStudents}</p>
+                        <p className="text-sm text-gray-400">Total Students</p>
+                    </div>
                     <div className="p-5 bg-white/5 border border-white/10 rounded-2xl text-center">
                         <Ticket className="w-8 h-8 text-cyan-400 mx-auto mb-2" />
                         <p className="text-3xl font-bold text-white">{stats.totalCoupons}</p>
