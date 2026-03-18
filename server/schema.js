@@ -1,9 +1,9 @@
 import pool from "./db.js";
 
 export async function initDB() {
-    const client = await pool.connect();
-    try {
-        await client.query(`
+  const client = await pool.connect();
+  try {
+    await client.query(`
       CREATE TABLE IF NOT EXISTS students (
         id SERIAL PRIMARY KEY,
         booking_id VARCHAR(50),
@@ -30,6 +30,20 @@ export async function initDB() {
         UNIQUE(student_email, day)
       );
 
+      CREATE TABLE IF NOT EXISTS attendance (
+        id SERIAL PRIMARY KEY,
+        ticket_id VARCHAR(100) UNIQUE NOT NULL,
+        student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
+        student_name VARCHAR(255) NOT NULL,
+        student_email VARCHAR(255) NOT NULL,
+        day INTEGER NOT NULL CHECK (day >= 1 AND day <= 3),
+        date VARCHAR(100),
+        is_scanned BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        scanned_at TIMESTAMP,
+        UNIQUE(student_email, day)
+      );
+
       CREATE TABLE IF NOT EXISTS prompts (
         id SERIAL PRIMARY KEY,
         prompt_id VARCHAR(100) UNIQUE NOT NULL,
@@ -39,8 +53,8 @@ export async function initDB() {
         created_at TIMESTAMP DEFAULT NOW()
       );
     `);
-        console.log("✅ Database tables initialized");
-    } finally {
-        client.release();
-    }
+    console.log("✅ Database tables initialized");
+  } finally {
+    client.release();
+  }
 }

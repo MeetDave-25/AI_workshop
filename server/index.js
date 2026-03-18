@@ -69,7 +69,7 @@ app.get("/api/admin/students", async (req, res) => {
 
 app.delete("/api/admin/students/clear", async (req, res) => {
     try {
-        await pool.query("TRUNCATE TABLE students CASCADE");
+        await pool.query("TRUNCATE TABLE students RESTART IDENTITY CASCADE");
         res.json({ success: true, message: "All students deleted successfully" });
     } catch (err) {
         console.error("Error clearing students:", err);
@@ -242,6 +242,79 @@ app.post("/api/admin/coupons/verify", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error verifying coupon" });
+    }
+});
+
+// --- ATTENDANCE ---
+
+app.get("/api/attendance/my", async (req, res) => {
+    const { email } = req.query;
+    try {
+        const result = await pool.query("SELECT * FROM attendance WHERE student_email = $1 ORDER BY day ASC", [email]);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching attendance" });
+    }
+});
+
+app.post("/api/attendance/generate", async (req, res) => {
+    const { student_id, student_name, student_email, day, date } = req.body;
+
+    try {
+        const ticket_id = `ATND-D${day}-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
+        const result = await pool.query(
+            `INSERT INTO attendance (ticket_id, student_id, student_name, student_email, day, date) 
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+            [ticket_id, student_id, student_name, student_email, day, date]
+        );
+
+        res.json({ success: true, ticket: result.rows[0] });
+    } catch (err) {
+        if (err.constraint === 'attendance_student_email_day_key') {
+            return res.status(400).json({ success: false, message: `You have already generated an attendance ticket for Day ${day}` });
+        }
+        console.error(err);
+        res.status(500).json({ success: false, message: "Error generating attendance ticket" });
+    }
+});
+
+app.get("/api/admin/attendance", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM attendance ORDER BY created_at DESC");
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching attendance records" });
+    }
+});
+
+app.post("/api/admin/attendance/verify", async (req, res) => {
+    const { ticket_id } = req.body;
+
+    try {
+        const result = await pool.query("SELECT * FROM attendance WHERE ticket_id = $1", [ticket_id]);
+
+        if (result.rows.length === 0) {
+            return res.json({ status: "not_found" });
+        }
+
+        const ticket = result.rows[0];
+
+        if (ticket.is_scanned) {
+            return res.json({ status: "already_used", ticket }); // reusing already_used for scanner compatibility
+        }
+
+        // Mark as used
+        const updated = await pool.query(
+            "UPDATE attendance SET is_scanned = true, scanned_at = NOW() WHERE ticket_id = $1 RETURNING *",
+            [ticket_id]
+        );
+
+        // UI Scanner uses `coupon` internally for rendering success message
+        res.json({ status: "valid", ticket: updated.rows[0], coupon: updated.rows[0] });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error verifying attendance ticket" });
     }
 });
 

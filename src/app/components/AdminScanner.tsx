@@ -38,6 +38,7 @@ interface ScanResult {
 }
 
 export function AdminScanner() {
+    const [scanType, setScanType] = useState<"food" | "attendance">("attendance");
     const [couponId, setCouponId] = useState("");
     const [scanResult, setScanResult] = useState<ScanResult | null>(null);
     const [isScanning, setIsScanning] = useState(false);
@@ -54,11 +55,12 @@ export function AdminScanner() {
         return () => {
             stopCamera();
         };
-    }, []);
+    }, [scanType]);
 
     const loadCoupons = async () => {
         try {
-            const res = await fetch('/api/admin/coupons');
+            const endpoint = scanType === "food" ? '/api/admin/coupons' : '/api/admin/attendance';
+            const res = await fetch(endpoint);
             if (res.ok) {
                 const data = await res.json();
                 setAllCoupons(data);
@@ -96,7 +98,7 @@ export function AdminScanner() {
                 return;
             }
         } catch {
-            if (decodedText.startsWith("AIBC-")) {
+            if (decodedText.startsWith("AIBC-") || decodedText.startsWith("ATND-")) {
                 couponIdToVerify = decodedText;
             } else {
                 setScanResult({ status: "invalid_qr", message: "Invalid QR code." });
@@ -110,10 +112,15 @@ export function AdminScanner() {
     const verifyCouponById = async (id: string) => {
         setIsScanning(true);
         try {
-            const res = await fetch('/api/admin/coupons/verify', {
+            // Determine the endpoint automatically based on prefix, or use selected scan type as fallback
+            const isAttendance = id.startsWith("ATND-") || (scanType === "attendance" && !id.startsWith("AIBC-"));
+            const endpoint = isAttendance ? '/api/admin/attendance/verify' : '/api/admin/coupons/verify';
+            const bodyPayload = isAttendance ? { ticket_id: id.trim() } : { coupon_id: id.trim() };
+
+            const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ coupon_id: id.trim() })
+                body: JSON.stringify(bodyPayload)
             });
             const data = await res.json();
             setScanResult(data);
@@ -163,13 +170,13 @@ export function AdminScanner() {
     };
 
     const dayCoupons = allCoupons.filter((c) => c.day === activeDay);
-    const dayRedeemed = dayCoupons.filter((c) => c.is_used);
-    const dayPending = dayCoupons.filter((c) => !c.is_used);
+    const dayRedeemed = dayCoupons.filter((c) => scanType === 'food' ? c.is_used : (c as any).is_scanned);
+    const dayPending = dayCoupons.filter((c) => scanType === 'food' ? !c.is_used : !(c as any).is_scanned);
 
     return (
         <div className="min-h-screen bg-black text-white relative overflow-hidden">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+            <div className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl ${scanType === 'food' ? 'bg-green-500/5' : 'bg-blue-500/5'}`} />
+            <div className={`absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl ${scanType === 'food' ? 'bg-cyan-500/5' : 'bg-indigo-500/5'}`} />
 
             <div className="relative z-10 container mx-auto px-4 max-w-5xl py-12">
                 <motion.button onClick={() => { stopCamera(); navigate("/admin"); }} className="flex items-center gap-2 text-gray-400 hover:text-cyan-400 mb-8">
@@ -177,11 +184,21 @@ export function AdminScanner() {
                 </motion.button>
 
                 <motion.div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-br from-green-400 to-cyan-500 rounded-2xl">
+                    <div className={`inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-br rounded-2xl ${scanType === 'food' ? 'from-green-400 to-cyan-500' : 'from-blue-400 to-indigo-500'}`}>
                         <ScanLine className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-3xl md:text-4xl mb-2 bg-gradient-to-r from-green-300 to-cyan-300 bg-clip-text text-transparent">Scan & Redeem</h1>
+                    <h1 className={`text-3xl md:text-4xl mb-2 bg-gradient-to-r bg-clip-text text-transparent ${scanType === 'food' ? 'from-green-300 to-cyan-300' : 'from-blue-300 to-indigo-300'}`}>
+                        {scanType === 'food' ? "Scan & Redeem Food" : "Scan Attendance"}
+                    </h1>
                 </motion.div>
+
+                {/* Scan Type Toggle */}
+                <div className="flex justify-center mb-6">
+                    <div className="bg-white/5 rounded-xl p-1 border border-white/10 flex">
+                        <button onClick={() => { setScanType("attendance"); stopCamera(); setScanResult(null); }} className={`px-6 py-2 rounded-lg transition-all ${scanType === "attendance" ? "bg-blue-500/30 text-blue-300" : "text-gray-400"}`}>Attendance</button>
+                        <button onClick={() => { setScanType("food"); stopCamera(); setScanResult(null); }} className={`px-6 py-2 rounded-lg transition-all ${scanType === "food" ? "bg-green-500/30 text-green-300" : "text-gray-400"}`}>Food Coupons</button>
+                    </div>
+                </div>
 
                 <div className="flex justify-center mb-8">
                     <div className="flex bg-white/5 rounded-xl p-1 border border-white/10">
@@ -229,11 +246,11 @@ export function AdminScanner() {
                     {scanResult && (
                         <motion.div key={scanResult.status + Date.now()} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="mb-8">
                             {scanResult.status === "valid" && scanResult.coupon && (
-                                <div className="p-6 bg-green-500/10 border-2 border-green-500/40 rounded-3xl">
-                                    <div className="flex items-center gap-3 mb-4"><CheckCircle2 className="w-10 h-10 text-green-400" /><div><h3 className="text-2xl text-green-300">Entry Done! ✅</h3></div></div>
+                                <div className={`p-6 border-2 rounded-3xl ${scanType === 'food' ? 'bg-green-500/10 border-green-500/40' : 'bg-blue-500/10 border-blue-500/40'}`}>
+                                    <div className="flex items-center gap-3 mb-4"><CheckCircle2 className={`w-10 h-10 ${scanType === 'food' ? 'text-green-400' : 'text-blue-400'}`} /><div><h3 className={`text-2xl ${scanType === 'food' ? 'text-green-300' : 'text-blue-300'}`}>Entry Done! ✅</h3></div></div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                                         <InfoCard icon={User} label="Student" value={scanResult.coupon.student_name} />
-                                        <InfoCard icon={Hash} label="ID" value={scanResult.coupon.coupon_id.substring(0, 10) + "..."} />
+                                        <InfoCard icon={Hash} label="ID" value={(scanResult.coupon as any).ticket_id?.substring(0, 10) || scanResult.coupon.coupon_id?.substring(0, 10) || "..."} />
                                         <InfoCard icon={Calendar} label="Day" value={`Day ${scanResult.coupon.day}`} />
                                         <InfoCard icon={Clock} label="Time" value={new Date().toLocaleTimeString()} />
                                     </div>
@@ -269,17 +286,22 @@ export function AdminScanner() {
                         })}
                     </div>
                     <div className="space-y-2 max-h-96 overflow-y-auto">
-                        {dayCoupons.map((coupon, i) => (
-                            <div key={coupon.coupon_id} className={`grid grid-cols-12 gap-2 p-3 rounded-xl border ${coupon.is_used ? "bg-green-500/5 border-green-500/10" : "bg-white/5 border-white/5"}`}>
-                                <span className="col-span-1 text-gray-500 text-sm">{i + 1}</span>
-                                <span className="col-span-3 text-white text-sm truncate">{coupon.student_name}</span>
-                                <span className="col-span-3 text-gray-400 text-sm truncate">{coupon.student_email || coupon.coupon_id.slice(0, 10)}</span>
-                                <span className="col-span-3 text-gray-500 text-xs">{coupon.redeemed_at ? new Date(coupon.redeemed_at).toLocaleTimeString() : "—"}</span>
-                                <span className="col-span-2 text-right">
-                                    {coupon.is_used ? <span className="text-green-300">Done</span> : <span className="text-cyan-300">Pending</span>}
-                                </span>
-                            </div>
-                        ))}
+                        {dayCoupons.map((coupon, i) => {
+                            const isDone = scanType === 'food' ? coupon.is_used : (coupon as any).is_scanned;
+                            const idStr = (coupon as any).ticket_id || coupon.coupon_id;
+                            const timeStr = scanType === 'food' ? coupon.redeemed_at : (coupon as any).scanned_at;
+                            return (
+                                <div key={idStr} className={`grid grid-cols-12 gap-2 p-3 rounded-xl border ${isDone ? "bg-green-500/5 border-green-500/10" : "bg-white/5 border-white/5"}`}>
+                                    <span className="col-span-1 text-gray-500 text-sm">{i + 1}</span>
+                                    <span className="col-span-3 text-white text-sm truncate">{coupon.student_name}</span>
+                                    <span className="col-span-3 text-gray-400 text-sm truncate">{coupon.student_email || idStr?.slice(0, 10)}</span>
+                                    <span className="col-span-3 text-gray-500 text-xs">{timeStr ? new Date(timeStr).toLocaleTimeString() : "—"}</span>
+                                    <span className="col-span-2 text-right">
+                                        {isDone ? <span className="text-green-300">Done</span> : <span className="text-gray-500">Pending</span>}
+                                    </span>
+                                </div>
+                            );
+                        })}
                     </div>
                 </motion.div>
             </div>

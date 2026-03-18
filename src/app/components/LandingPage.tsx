@@ -5,6 +5,7 @@ import { Workflow } from "./Workflow";
 import { WhatStudentsCreate } from "./WhatStudentsCreate";
 import { Tools } from "./Tools";
 import { Certification } from "./Certification";
+import { AttendanceTicket } from "./AttendanceTicket";
 import { FoodCoupon } from "./FoodCoupon";
 import { PromptsSection } from "./PromptsSection";
 import { Team } from "./Team";
@@ -29,6 +30,7 @@ export function LandingPage() {
                 <Certification />
             </div>
             <PromptsSection />
+            <AttendanceTicket />
             <FoodCoupon />
             <Team />
             <Footer />

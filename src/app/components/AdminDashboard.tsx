@@ -11,7 +11,9 @@ import {
     BarChart3,
     LogOut,
     Users,
+    Download,
 } from "lucide-react";
+import * as XLSX from "xlsx";
 
 export function AdminDashboard() {
     const [stats, setStats] = useState({ totalCoupons: 0, usedCoupons: 0, totalPrompts: 0, totalStudents: 0 });
@@ -65,6 +67,22 @@ export function AdminDashboard() {
     const handleLogout = () => {
         logout();
         navigate("/");
+    };
+
+    const handleExportAttendance = async () => {
+        try {
+            const res = await fetch('/api/admin/attendance');
+            if (!res.ok) throw new Error("Failed to fetch");
+            const data = await res.json();
+
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Attendance");
+            XLSX.writeFile(wb, "Attendance_Report.xlsx");
+        } catch (error) {
+            console.error("Error exporting to Excel:", error);
+            alert("Failed to export attendance data.");
+        }
     };
 
     if (!isAdmin) return null;
@@ -136,6 +154,15 @@ export function AdminDashboard() {
                     <p className="text-gray-400">
                         Manage bootcamp operations
                     </p>
+                    <motion.button
+                        onClick={handleExportAttendance}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="mt-6 mx-auto flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-white shadow-lg shadow-green-500/20"
+                    >
+                        <Download className="w-5 h-5" />
+                        Export Attendance (.xlsx)
+                    </motion.button>
                 </motion.div>
 
                 {/* Stats */}
