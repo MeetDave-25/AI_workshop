@@ -9,20 +9,22 @@ interface Message {
 }
 
 const FAQ_RESPONSES: Record<string, string> = {
+  "hi|hello|hey|start": "👋 Hi, I am Pruthvi, your AI Assistant! Here's our **Bootcamp Workflow**: \n\n📅 **Day 1: Web Basics & AI Foundation**\n• Learn HTML, CSS, JavaScript basics\n• Understand AI concepts & ideation\n• Create your first web project\n\n📅 **Day 2: Database & Video Creation**\n• Connect databases to web apps\n• Learn API integration\n• Create visual & video content\n\n📅 **Day 3: Full Stack Project Showcase**\n• Build complete full-stack project\n• Showcase your work\n• Get certificates! 🎓\n\n*Need help with attendance, food, or anything else?* Just ask! 😊",
   "login|signin|password|email": "📧 To login: Enter your email → Enter phone number → Get code on WhatsApp → Verify!",
   "attendance|ticket|generate": "📋 Attendance: Generate Ticket → Show QR to admin → Scanned! Check status instantly ✅",
   "food|coupon|meal|lunch": "🍽️ Food Coupon: Generate → Show QR at counter! 🍽️",
   "scan|admin|verify": "🔍 Admin scans QR → Ticket/Coupon verified automatically! ⚡",
-  "schedule|day|bootcamp": "📅 Day 1: Web • Day 2: Database • Day 3: Full Stack 🚀",
+  "schedule|day|bootcamp|workflow": "📅 **Our Bootcamp Schedule:**\n\n📅 **Day 1: Web Basics & AI Foundation**\n• Learn HTML, CSS, JavaScript\n• Understand AI & Ideation\n• Create first web project\n\n📅 **Day 2: Database & Video Creation**\n• Connect databases\n• Learn API integration\n• Create visual content\n\n📅 **Day 3: Full Stack Showcase**\n• Build complete project\n• Showcase to everyone\n• Get official certificates! 🎓",
   "error|problem|bug|issue": "❌ Try refreshing page or re-login. Still stuck? Contact admin!",
   "help|how|what": "💡 Ask me: Attendance • Food • Login • Scanning • Schedule!",
+  "thanks|thank you": "😊 You're welcome! Anything else I can help with?",
 };
 
 const QUICK_QUESTIONS = [
+  { label: "� Say Hi", query: "Hi" },
   { label: "📋 Attendance Ticket", query: "How do I generate attendance ticket?" },
   { label: "🍽️ Food Coupon", query: "How to get food coupon?" },
-  { label: "🔍 Admin Scanning", query: "How does admin scanning work?" },
-  { label: "📅 Schedule", query: "What's the bootcamp schedule?" },
+  { label: "📅 Schedule & Workflow", query: "What's the bootcamp schedule?" },
   { label: "❓ Having Issues", query: "I'm having issues" },
 ];
 
@@ -34,8 +36,8 @@ export function Pruthvi() {
   const [isVisible, setIsVisible] = useState(true); // Character visibility
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: "1",
-      text: "Hi! I'm Pruthvi 👋 How can I help you today?",
+      id: "welcome",
+      text: "👋 Hi! I'm Pruthvi, your AI Assistant! How can I help you today?",
       sender: "pruthvi",
     },
   ]);
@@ -325,7 +327,7 @@ export function Pruthvi() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-6 right-6 w-96 max-h-[90vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
+            className="fixed bottom-6 right-6 w-full max-w-md max-h-[90vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
           >
             {/* Header with Character */}
             <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-4 flex items-center justify-between">
@@ -369,10 +371,10 @@ export function Pruthvi() {
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-xs px-4 py-3 rounded-2xl text-sm font-medium ${
+                    className={`px-4 py-3 rounded-2xl text-sm font-medium whitespace-pre-wrap leading-relaxed ${
                       msg.sender === "user"
-                        ? "bg-gradient-to-r from-cyan-500/50 to-blue-500/50 text-cyan-50 rounded-br-none border border-cyan-400/50"
-                        : "bg-gradient-to-r from-blue-600/40 to-indigo-600/40 text-blue-50 rounded-bl-none border border-blue-400/50"
+                        ? "max-w-xs bg-gradient-to-r from-cyan-500/50 to-blue-500/50 text-cyan-50 rounded-br-none border border-cyan-400/50"
+                        : "max-w-sm bg-gradient-to-r from-blue-600/40 to-indigo-600/40 text-blue-50 rounded-bl-none border border-blue-400/50"
                     }`}
                   >
                     {msg.text}
