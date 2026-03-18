@@ -124,8 +124,9 @@ export function AdminScanner() {
             });
             const data = await res.json();
             setScanResult(data);
-            if (data.status === 'valid') {
-                loadCoupons(); // Refresh list immediately
+            // Refresh list for all non-error statuses
+            if (data.status === 'valid' || data.status === 'already_used' || data.status === 'not_found') {
+                await loadCoupons(); // Refresh list immediately
             }
         } catch (err) {
             setScanResult({ status: 'invalid_qr', message: 'Network error communicating with server.' });
@@ -278,11 +279,23 @@ export function AdminScanner() {
                             {scanResult.status === "already_used" && scanResult.coupon && (
                                 <div className="p-6 bg-red-500/10 border-2 border-red-500/40 rounded-3xl">
                                     <div className="flex items-center gap-3 mb-4"><XCircle className="w-10 h-10 text-red-400" /><div><h3 className="text-2xl text-red-300">Duplicate! Already Used ❌</h3></div></div>
-                                    <button onClick={scanAnother} className="w-full py-3 bg-white/10 text-white rounded-xl">Scan Next</button>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                                        <InfoCard icon={User} label="Student" value={scanResult.coupon.student_name} />
+                                        <InfoCard icon={Hash} label="ID" value={(scanResult.coupon as any).ticket_id?.substring(0, 10) || scanResult.coupon.coupon_id?.substring(0, 10) || "..."} />
+                                        <InfoCard icon={Calendar} label="Day" value={`Day ${scanResult.coupon.day}`} />
+                                        <InfoCard icon={Clock} label="Previously Scanned" value={(scanResult.coupon as any).scanned_at ? new Date((scanResult.coupon as any).scanned_at).toLocaleTimeString() : (scanResult.coupon.redeemed_at ? new Date(scanResult.coupon.redeemed_at).toLocaleTimeString() : "—")} />
+                                    </div>
+                                    <p className="text-red-200 mb-4 text-sm">This ticket has already been processed. Please don't scan it again.</p>
+                                    <button onClick={scanAnother} className="w-full py-3 bg-red-500/20 text-red-300 rounded-xl">Scan Next</button>
                                 </div>
                             )}
                             {scanResult.status === "not_found" && (
-                                <div className="p-6 bg-yellow-500/10 border-2 border-yellow-500/40 rounded-3xl text-center"><XCircle className="w-10 h-10 text-yellow-400 mx-auto mb-2" /><p className="text-yellow-300">Coupon Not Found</p><button onClick={scanAnother} className="mt-4 px-6 py-2 bg-white/10 rounded-xl">Try Again</button></div>
+                                <div className="p-6 bg-yellow-500/10 border-2 border-yellow-500/40 rounded-3xl text-center">
+                                    <XCircle className="w-10 h-10 text-yellow-400 mx-auto mb-3" />
+                                    <h3 className="text-2xl text-yellow-300 mb-2">Ticket Not Found ⚠️</h3>
+                                    <p className="text-yellow-200 mb-4">This {scanType === 'food' ? 'coupon' : 'ticket'} does not exist in the system. Please verify the QR code or ID.</p>
+                                    <button onClick={scanAnother} className="w-full py-3 bg-yellow-500/20 text-yellow-300 rounded-xl">Try Again</button>
+                                </div>
                             )}
                         </motion.div>
                     )}
@@ -290,15 +303,21 @@ export function AdminScanner() {
 
                 {/* Day-wise Report */}
                 <motion.div className="p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl">
-                    <h3 className="text-xl mb-6 text-white flex items-center gap-2"><Calendar className="w-5 h-5 text-purple-400" /> Day-wise Report</h3>
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-xl text-white flex items-center gap-2"><Calendar className="w-5 h-5 text-purple-400" /> Day-wise Report</h3>
+                        <button onClick={loadCoupons} className="px-4 py-2 bg-purple-500/20 text-purple-300 rounded-lg hover:bg-purple-500/30 transition-all flex items-center gap-2 text-sm">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                            Refresh
+                        </button>
+                    </div>
                     <div className="flex gap-3 mb-6">
                         {[1, 2, 3].map((day) => {
                             const count = allCoupons.filter((c) => c.day === day).length;
-                            const used = allCoupons.filter((c) => c.day === day && c.is_used).length;
+                            const used = allCoupons.filter((c) => c.day === day && (scanType === 'food' ? c.is_used : (c as any).is_scanned)).length;
                             return (
                                 <button key={day} onClick={() => setActiveDay(day)} className={`flex-1 p-4 rounded-xl border ${activeDay === day ? "bg-cyan-500/20 border-cyan-500/40" : "bg-white/5 border-white/10"}`}>
                                     <p className={`text-lg font-bold ${activeDay === day ? "text-cyan-300" : "text-white"}`}>Day {day}</p>
-                                    <p className="text-sm text-gray-400">{used}/{count} redeemed</p>
+                                    <p className="text-sm text-gray-400">{used}/{count} {scanType === 'food' ? 'redeemed' : 'marked'}</p>
                                 </button>
                             );
                         })}
