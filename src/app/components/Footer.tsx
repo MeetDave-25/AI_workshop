@@ -15,7 +15,8 @@ export function Footer() {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-6 h-6 text-cyan-400" />
             <h3 className="text-2xl bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
-              AI Powered Creators Bootcamp 2026
+              AI Powered Creators Bootcamp
+
             </h3>
             <Sparkles className="w-6 h-6 text-purple-400" />
           </div>

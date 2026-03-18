@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Sparkles, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Stars } from "./Stars";
 
 export function Hero() {
@@ -15,17 +15,6 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-sm border border-cyan-500/30 rounded-full">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
-            <span className="text-sm text-cyan-300">March</span>
-          </div>
-        </motion.div>
-
         <motion.h1
           className="text-5xl md:text-7xl lg:text-8xl mb-6 bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 30 }}
