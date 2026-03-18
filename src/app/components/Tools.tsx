@@ -4,6 +4,7 @@ export function Tools() {
   const tools = [
     { name: "ChatGPT", emoji: "💬", color: "from-green-400 to-green-600" },
     { name: "Gemini", emoji: "✨", color: "from-blue-400 to-blue-600" },
+    { name: "Google AI Studio", emoji: "🧪", color: "from-yellow-400 to-yellow-600" },
     { name: "Claude", emoji: "🧠", color: "from-orange-400 to-orange-600" },
     { name: "Grok", emoji: "🤖", color: "from-gray-400 to-gray-600" },
     { name: "Meta", emoji: "🎨", color: "from-purple-400 to-purple-600" },
