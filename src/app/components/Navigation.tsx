@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "../context/AuthContext";
-import { Menu, X, Sparkles, User, LogOut, Shield } from "lucide-react";
+import { Menu, X, Sparkles, User, LogOut, Shield, MessageCircle } from "lucide-react";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +61,16 @@ export function Navigation() {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 group-hover:w-full transition-all duration-300" />
               </a>
             ))}
+
+            {/* Chat Button */}
+            <button
+              onClick={() => window?.openPruthviChat?.()}
+              className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 border border-cyan-500/30 rounded-lg text-cyan-300 hover:bg-cyan-500/30 transition-all text-sm hover:text-cyan-200"
+              title="Open Chat Assistant"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Chat
+            </button>
 
             {/* Auth buttons */}
             {isLoggedIn ? (
@@ -130,6 +140,21 @@ export function Navigation() {
                   {item.label}
                 </motion.a>
               ))}
+
+              {/* Mobile Chat Button */}
+              <motion.button
+                onClick={() => {
+                  window?.openPruthviChat?.();
+                  handleNavClick();
+                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navItems.length * 0.05 }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-cyan-500/20 border border-cyan-500/30 rounded-xl text-cyan-300 hover:bg-cyan-500/30 transition-all"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Chat with Pruthvi</span>
+              </motion.button>
 
               {isLoggedIn ? (
                 <>
