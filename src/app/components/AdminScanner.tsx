@@ -85,8 +85,8 @@ export function AdminScanner() {
         );
     }
 
-    const processScannedData = (decodedText: string) => {
-        stopCamera();
+    const processScannedData = async (decodedText: string) => {
+        await stopCamera();
 
         let couponIdToVerify = "";
         try {
@@ -138,13 +138,27 @@ export function AdminScanner() {
     const startCamera = async () => {
         setScanResult(null);
         try {
+            // Stop any existing scanner first
+            if (scannerRef.current) {
+                try {
+                    if (scannerRef.current.getState() === 2) await scannerRef.current.stop();
+                } catch { }
+                scannerRef.current = null;
+            }
+
             const scanner = new Html5Qrcode("qr-reader");
             scannerRef.current = scanner;
 
             await scanner.start(
                 { facingMode: "environment" },
                 { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1 },
-                (decodedText) => processScannedData(decodedText),
+                (decodedText) => {
+                    // Call async function without waiting to avoid blocking the scanner
+                    processScannedData(decodedText).catch((err) => {
+                        console.error("Error processing scanned data:", err);
+                        setScanResult({ status: "invalid_qr", message: "Error processing scan." });
+                    });
+                },
                 () => { }
             );
             setIsCameraActive(true);
@@ -164,9 +178,13 @@ export function AdminScanner() {
         setIsCameraActive(false);
     };
 
-    const scanAnother = () => {
+    const scanAnother = async () => {
         setScanResult(null);
-        if (mode === "camera") startCamera();
+        setCouponId(""); // Clear input for manual mode
+        if (mode === "camera") {
+            await stopCamera();
+            setTimeout(() => startCamera(), 300);
+        }
     };
 
     const dayCoupons = allCoupons.filter((c) => c.day === activeDay);
