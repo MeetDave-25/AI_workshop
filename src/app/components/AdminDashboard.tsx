@@ -14,6 +14,7 @@ import {
     Download,
 } from "lucide-react";
 import * as XLSX from "xlsx";
+import { AdminGenerationControl } from "./AdminGenerationControl";
 
 export function AdminDashboard() {
     const [stats, setStats] = useState({ totalCoupons: 0, usedCoupons: 0, totalPrompts: 0, totalStudents: 0 });
@@ -192,6 +193,16 @@ export function AdminDashboard() {
                         <p className="text-3xl font-bold text-white">{stats.totalPrompts}</p>
                         <p className="text-sm text-gray-400">Prompts</p>
                     </div>
+                </motion.div>
+
+                {/* Generation Control */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 }}
+                    className="mb-12"
+                >
+                    <AdminGenerationControl />
                 </motion.div>
 
                 {/* Admin Cards */}

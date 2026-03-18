@@ -73,6 +73,18 @@ export function FoodCoupon() {
       return;
     }
 
+    // Check if generation is enabled for this day
+    try {
+      const enabledRes = await fetch(`/api/generation-status/check/${selectedDay}/coupon`);
+      const enabledData = await enabledRes.json();
+      if (!enabledData.enabled) {
+        setError(`❌ Coupon generation is not enabled yet for Day ${selectedDay}. Please wait for admin to enable it.`);
+        return;
+      }
+    } catch (err) {
+      console.error("Failed to check generation status", err);
+    }
+
     setIsLoading(true);
 
     try {

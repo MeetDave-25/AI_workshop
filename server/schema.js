@@ -53,6 +53,16 @@ export async function initDB() {
         content TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT NOW()
       );
+
+      CREATE TABLE IF NOT EXISTS generation_status (
+        id SERIAL PRIMARY KEY,
+        day INTEGER NOT NULL CHECK (day >= 1 AND day <= 3),
+        ticket_generation_enabled BOOLEAN DEFAULT false,
+        coupon_generation_enabled BOOLEAN DEFAULT false,
+        updated_at TIMESTAMP DEFAULT NOW(),
+        updated_by VARCHAR(100),
+        UNIQUE(day)
+      );
     `);
       console.log("✅ Database tables initialized");
     } finally {

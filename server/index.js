@@ -371,6 +371,60 @@ app.delete("/api/prompts/:id", async (req, res) => {
     }
 });
 
+// --- GENERATION STATUS CONTROL ---
+
+app.get("/api/generation-status", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM generation_status ORDER BY day ASC");
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error fetching generation status" });
+    }
+});
+
+app.get("/api/generation-status/check/:day/:type", async (req, res) => {
+    const { day, type } = req.params;
+    
+    try {
+        const result = await pool.query("SELECT * FROM generation_status WHERE day = $1", [parseInt(day)]);
+        
+        if (result.rows.length === 0) {
+            return res.json({ enabled: false });
+        }
+
+        const status = result.rows[0];
+        const fieldName = type === "ticket" ? "ticket_generation_enabled" : "coupon_generation_enabled";
+        
+        res.json({ enabled: status[fieldName] || false });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error checking generation status" });
+    }
+});
+
+app.post("/api/admin/generation-status/:day/:type", async (req, res) => {
+    const { day, type } = req.params;
+    const { enabled } = req.body;
+
+    try {
+        const fieldName = type === "ticket" ? "ticket_generation_enabled" : "coupon_generation_enabled";
+        
+        const result = await pool.query(
+            `INSERT INTO generation_status (day, ${fieldName}, updated_at, updated_by) 
+             VALUES ($1, $2, NOW(), 'admin')
+             ON CONFLICT (day) DO UPDATE SET ${fieldName} = $2, updated_at = NOW()
+             RETURNING *`,
+            [parseInt(day), enabled === true]
+        );
+
+        res.json({ success: true, status: result.rows[0] });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error updating generation status" });
+    }
+});
+
 const PORT = process.env.PORT || 3001;
 
 async function startServer() {
