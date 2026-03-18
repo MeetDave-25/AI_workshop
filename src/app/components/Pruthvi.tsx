@@ -190,119 +190,22 @@ export function Pruthvi() {
               onClick={handleCharacterClick}
               whileHover={{ scale: 1.12 }}
               whileTap={{ scale: 0.95 }}
-              className="focus:outline-none group"
+              className="focus:outline-none group relative"
             >
-              {/* Character Body */}
+              {/* Avatar Image */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-20 md:w-28 h-28 md:h-36 cursor-pointer"
+                className="relative w-28 h-28 md:w-36 md:h-36 cursor-pointer"
               >
                 {/* Glow Effect */}
                 <div className="absolute inset-0 blur-xl bg-gradient-to-br from-cyan-400/30 to-blue-500/30 rounded-full" />
 
-                {/* Head - Beautiful Circle */}
-                <motion.div
-                  animate={{ rotate: [0, 3, -3, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  className="absolute top-0 left-1 md:left-2 w-16 md:w-20 h-16 md:h-20 bg-gradient-to-br from-yellow-300 via-yellow-200 to-yellow-400 rounded-full border-4 border-yellow-300 shadow-xl"
-                >
-                  {/* Forehead shine */}
-                  <div className="absolute top-2 left-3 w-6 h-2 bg-white/40 rounded-full blur-sm" />
-
-                  {/* Eyes */}
-                  <div className="flex items-center justify-center gap-4 mt-3 px-3">
-                    {/* Left Eye */}
-                    <motion.div
-                      animate={{
-                        scaleY: [1, 0.2, 1],
-                        y: [0, 1, 0],
-                      }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      className="relative w-4 h-4 bg-white rounded-full border-2 border-gray-800 overflow-hidden"
-                    >
-                      <motion.div
-                        animate={{ x: [1, -1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute w-2 h-2 bg-gray-900 rounded-full top-1 left-1"
-                      />
-                    </motion.div>
-
-                    {/* Right Eye */}
-                    <motion.div
-                      animate={{
-                        scaleY: [1, 0.2, 1],
-                        y: [0, 1, 0],
-                      }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 0.1 }}
-                      className="relative w-4 h-4 bg-white rounded-full border-2 border-gray-800 overflow-hidden"
-                    >
-                      <motion.div
-                        animate={{ x: [1, -1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute w-2 h-2 bg-gray-900 rounded-full top-1 left-1"
-                      />
-                    </motion.div>
-                  </div>
-
-                  {/* Smile/Mouth */}
-                  <div className="flex justify-center mt-3">
-                    <motion.svg
-                      width="16"
-                      height="10"
-                      viewBox="0 0 16 10"
-                      animate={{
-                        scaleY: [1, 1.2, 1],
-                      }}
-                      transition={{ duration: 2.5, repeat: Infinity }}
-                    >
-                      <path
-                        d="M 2 3 Q 8 7 14 3"
-                        stroke="#333"
-                        strokeWidth="2"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                    </motion.svg>
-                  </div>
-
-                  {/* Blush */}
-                  <motion.div
-                    animate={{ opacity: [0.4, 0.7, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute top-9 left-1 w-2 h-2 bg-pink-300/60 rounded-full blur-sm"
-                  />
-                  <motion.div
-                    animate={{ opacity: [0.4, 0.7, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute top-9 right-1 w-2 h-2 bg-pink-300/60 rounded-full blur-sm"
-                  />
-                </motion.div>
-
-                {/* Body - Trapezoid */}
-                <div className="absolute top-14 md:top-16 left-0.5 md:left-1 w-20 md:w-24 h-8 md:h-10 bg-gradient-to-b from-blue-400 to-blue-500 rounded-2xl border-3 border-blue-400 shadow-lg">
-                  {/* Chest shine */}
-                  <div className="absolute top-1 left-2 md:left-3 w-6 md:w-8 h-2 bg-white/30 rounded-full blur-sm" />
-                </div>
-
-                {/* Left Arm */}
-                <motion.div
-                  animate={{
-                    rotate: [10, 35, 10],
-                    x: [-2, 2, -2],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute top-14 md:top-16 -left-0.5 md:-left-1 w-3 md:w-4 h-10 md:h-12 bg-gradient-to-b from-yellow-300 to-yellow-400 rounded-full origin-top-right shadow-md border border-yellow-300"
-                />
-
-                {/* Right Arm */}
-                <motion.div
-                  animate={{
-                    rotate: [10, -35, 10],
-                    x: [2, -2, 2],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
-                  className="absolute top-14 md:top-16 -right-0.5 md:-right-1 w-3 md:w-4 h-10 md:h-12 bg-gradient-to-b from-yellow-300 to-yellow-400 rounded-full origin-top-left shadow-md border border-yellow-300"
+                {/* Image Container */}
+                <img
+                  src="/prithvi.jpeg"
+                  alt="Pruthvi"
+                  className="w-full h-full rounded-full object-cover border-4 border-cyan-400 shadow-2xl shadow-cyan-500/50"
                 />
 
                 {/* Click Label */}
@@ -311,7 +214,7 @@ export function Pruthvi() {
                   transition={{ duration: 2.5, repeat: Infinity }}
                   className="absolute -top-10 md:-top-12 left-1/2 transform -translate-x-1/2 text-xs bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-2 md:px-3 py-1 md:py-1.5 rounded-full whitespace-nowrap font-bold shadow-lg border border-cyan-300"
                 >
-                  Click me! 💬
+                  Chat 💬
                 </motion.div>
               </motion.div>
             </motion.button>
@@ -333,19 +236,13 @@ export function Pruthvi() {
             <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-2 md:p-4 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                 {/* Mini Avatar */}
-                <motion.div
+                <motion.img
                   animate={{ rotate: [0, 5, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className="w-10 md:w-14 h-10 md:h-14 bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-full flex items-center justify-center border-3 border-white shadow-lg relative overflow-hidden flex-shrink-0"
-                >
-                  {/* Eyes */}
-                  <div className="flex gap-1.5 md:gap-2">
-                    <div className="w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-800 rounded-full" />
-                    <div className="w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-800 rounded-full" />
-                  </div>
-                  {/* Shine */}
-                  <div className="absolute top-1 left-2 w-2 h-2 bg-white/50 rounded-full blur-sm" />
-                </motion.div>
+                  src="/prithvi.jpeg"
+                  alt="Pruthvi"
+                  className="w-10 md:w-14 h-10 md:h-14 rounded-full object-cover border-3 border-white shadow-lg flex-shrink-0"
+                />
                 <div className="min-w-0">
                   <h3 className="text-white font-bold text-sm md:text-lg truncate">Pruthvi</h3>
                   <p className="text-xs text-cyan-100 truncate">AI Assistant</p>
