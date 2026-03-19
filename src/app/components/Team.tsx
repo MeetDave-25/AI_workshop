@@ -62,6 +62,7 @@ const teamMembers: TeamMember[] = [
         role: "Co-ordinator",
         initials: "HC",
         gradient: "from-violet-400 to-purple-500",
+        image: "/hetal.jpeg",
     },
     {
         name: "Janvi Nankani",
