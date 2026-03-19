@@ -230,36 +230,36 @@ export function Pruthvi() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-3 right-3 md:bottom-4 md:right-4 w-[calc(100vw-1.5rem)] md:w-full md:max-w-sm h-[60vh] sm:h-[55vh] md:max-h-[90vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
+            className="fixed bottom-3 right-3 md:bottom-4 md:right-4 w-[calc(100vw-1.5rem)] md:w-full md:max-w-sm h-[65vh] sm:h-[60vh] md:max-h-[92vh] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-2 border-cyan-500/60 rounded-3xl shadow-2xl shadow-cyan-500/30 flex flex-col overflow-hidden z-50"
           >
             {/* Header with Character */}
-            <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-2 md:p-3 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 md:gap-2 min-w-0 flex-1">
+            <div className="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 px-3 md:px-4 py-2.5 md:py-3.5 flex items-center justify-between gap-2 shadow-lg shadow-cyan-500/20">
+              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                 {/* Mini Avatar */}
                 <motion.img
                   animate={{ rotate: [0, 5, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
                   src="/ai_pic.jpg"
                   alt="Pruthvi"
-                  className="w-8 md:w-12 h-8 md:h-12 rounded-full object-cover border-3 border-white shadow-lg flex-shrink-0"
+                  className="w-10 md:w-14 h-10 md:h-14 rounded-full object-cover border-3 border-white shadow-lg flex-shrink-0"
                 />
                 <div className="min-w-0">
-                  <h3 className="text-white font-bold text-xs md:text-base truncate">Pruthvi</h3>
-                  <p className="text-xs text-cyan-100 truncate hidden md:block">AI Assistant</p>
+                  <h3 className="text-white font-bold text-sm md:text-lg truncate">Pruthvi 🤖</h3>
+                  <p className="text-xs md:text-sm text-cyan-100 truncate hidden md:block">AI Assistant</p>
                 </div>
               </div>
               <motion.button
                 onClick={handleCloseChat}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white/20 hover:bg-white/30 rounded-full p-1 md:p-1.5 transition-all flex-shrink-0"
+                className="bg-white/25 hover:bg-white/40 rounded-full p-1.5 md:p-2 transition-all flex-shrink-0 shadow-lg"
               >
-                <X className="w-3.5 md:w-4 h-3.5 md:h-4 text-white" />
+                <X className="w-4 md:w-5 h-4 md:h-5 text-white" />
               </motion.button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-2 md:p-4 space-y-2 md:space-y-3 bg-black/50 min-h-24 md:min-h-56">
+            <div className="flex-1 overflow-y-auto p-3 md:p-5 space-y-3 md:space-y-4 bg-slate-950/80 min-h-24 md:min-h-56">
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
@@ -268,10 +268,10 @@ export function Pruthvi() {
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`px-4 py-3 rounded-2xl text-xs md:text-sm font-medium whitespace-pre-wrap leading-relaxed max-w-[90%] md:max-w-xs ${
+                    className={`px-4 py-3 rounded-2xl text-sm md:text-base font-medium whitespace-pre-wrap leading-relaxed max-w-[85%] md:max-w-xs ${
                       msg.sender === "user"
-                        ? "max-w-xs bg-gradient-to-r from-cyan-500/50 to-blue-500/50 text-cyan-50 rounded-br-none border border-cyan-400/50"
-                        : "max-w-sm bg-gradient-to-r from-blue-600/40 to-indigo-600/40 text-blue-50 rounded-bl-none border border-blue-400/50"
+                        ? "bg-cyan-600/90 text-white rounded-br-none border-2 border-cyan-500 shadow-lg shadow-cyan-500/30"
+                        : "bg-indigo-900/80 text-blue-50 rounded-bl-none border-2 border-indigo-500 shadow-lg shadow-indigo-500/20"
                     }`}
                   >
                     {msg.text}
@@ -282,16 +282,16 @@ export function Pruthvi() {
             </div>
 
             {/* Quick Question Buttons */}
-            <div className="px-2 md:px-3 py-2 bg-black/60 border-t border-cyan-400/20 max-h-[20vh] md:max-h-24 overflow-y-auto flex-shrink-0">
-              <p className="text-xs text-gray-400 mb-1.5 px-1 hidden md:block">Quick Questions:</p>
-              <div className="grid grid-cols-2 md:grid-cols-2 gap-1 md:gap-2">
+            <div className="px-3 md:px-4 py-3 bg-slate-900/90 border-t-2 border-cyan-500/50 max-h-[22vh] md:max-h-28 overflow-y-auto flex-shrink-0">
+              <p className="text-xs text-cyan-300 mb-2 px-1 hidden md:block font-semibold">Quick Questions:</p>
+              <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-2.5">
                 {QUICK_QUESTIONS.map((q, idx) => (
                   <motion.button
                     key={idx}
                     onClick={() => handleQuickQuestion(q.query)}
-                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileHover={{ scale: 1.08, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="text-xs bg-gradient-to-r from-blue-600/40 to-indigo-600/40 hover:from-blue-600/60 hover:to-indigo-600/60 text-blue-100 px-2 py-1.5 md:py-2 rounded-lg border border-blue-400/40 transition-all font-medium line-clamp-2"
+                    className="text-xs md:text-sm bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white px-3 py-2 md:py-2.5 rounded-xl border-2 border-indigo-400 transition-all font-semibold line-clamp-2 shadow-md hover:shadow-lg hover:shadow-indigo-500/40"
                   >
                     {q.label}
                   </motion.button>
@@ -300,22 +300,22 @@ export function Pruthvi() {
             </div>
 
             {/* Input */}
-            <div className="border-t border-cyan-400/30 p-2 md:p-3 bg-black/70 flex gap-1.5 md:gap-2 items-center flex-shrink-0">
+            <div className="border-t-2 border-cyan-500/50 p-3 md:p-4 bg-slate-900/95 flex gap-2 md:gap-3 items-center flex-shrink-0">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                placeholder="Type..."
-                className="flex-1 bg-white/10 border border-cyan-400/40 rounded-full px-3 py-2 md:px-4 md:py-2 text-white placeholder-gray-400 text-xs md:text-sm outline-none focus:border-cyan-400 focus:bg-white/15 transition-all"
+                placeholder="Ask me anything..."
+                className="flex-1 bg-slate-800/80 border-2 border-cyan-500/60 rounded-xl px-4 py-2.5 md:py-3 text-white placeholder-gray-400 text-sm md:text-base outline-none focus:border-cyan-400 focus:bg-slate-800 transition-all shadow-md focus:shadow-lg focus:shadow-cyan-500/30"
               />
               <motion.button
                 onClick={handleSendMessage}
-                whileHover={{ scale: 1.08 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-full p-2 md:p-2.5 transition-all shadow-lg flex-shrink-0"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full p-2.5 md:p-3 transition-all shadow-lg hover:shadow-xl hover:shadow-cyan-500/50 flex-shrink-0"
               >
-                <Send className="w-4 md:w-5 h-4 md:h-5" />
+                <Send className="w-5 md:w-6 h-5 md:h-6" />
               </motion.button>
             </div>
           </motion.div>
