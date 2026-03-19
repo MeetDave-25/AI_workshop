@@ -9,12 +9,12 @@ interface Message {
 }
 
 const FAQ_RESPONSES: Record<string, string> = {
-  "hi|hello|hey|start": "👋 Hi, I am Pruthvi, your AI Assistant! Here's our **Bootcamp Workflow**: \n\n📅 **Day 1: Web Basics & AI Foundation**\n• Learn HTML, CSS, JavaScript basics\n• Understand AI concepts & ideation\n• Create your first web project\n\n📅 **Day 2: Database & Video Creation**\n• Connect databases to web apps\n• Learn API integration\n• Create visual & video content\n\n📅 **Day 3: Full Stack Project Showcase**\n• Build complete full-stack project\n• Showcase your work\n• Get certificates! 🎓\n\n*Need help with attendance, food, or anything else?* Just ask! 😊",
+  "hi|hello|hey|start": "👋 Hi, I am Pruthvi, your AI Assistant! Here's our **Bootcamp Workflow**: \n\n📅 **Day 1: AI Foundation & Ideation + AI Story & Script Creation**\n• Learn AI concepts & ideation\n• Master AI story & script creation\n• Build your first AI project\n\n📅 **Day 2: AI Visual & Video Creation**\n• Create stunning visuals with AI\n• Generate videos using AI tools\n• Learn content creation techniques\n\n📅 **Day 3: Vibe Coding & Product Building**\n• Build complete AI product\n• Code your vibe with cutting-edge tools\n• Showcase your creation! 🚀\n• Get official certificates! 🎓\n\n*Need help with attendance, food, or anything else?* Just ask! 😊",
   "login|signin|password|email": "📧 To login: Enter your email → Enter phone number → Get code on WhatsApp → Verify!",
   "attendance|ticket|generate": "📋 Attendance: Generate Ticket → Show QR to admin → Scanned! Check status instantly ✅",
   "food|coupon|meal|lunch": "🍽️ Food Coupon: Generate → Show QR at counter! 🍽️",
   "scan|admin|verify": "🔍 Admin scans QR → Ticket/Coupon verified automatically! ⚡",
-  "schedule|day|bootcamp|workflow": "📅 **Our Bootcamp Schedule:**\n\n📅 **Day 1: Web Basics & AI Foundation**\n• Learn HTML, CSS, JavaScript\n• Understand AI & Ideation\n• Create first web project\n\n📅 **Day 2: Database & Video Creation**\n• Connect databases\n• Learn API integration\n• Create visual content\n\n📅 **Day 3: Full Stack Showcase**\n• Build complete project\n• Showcase to everyone\n• Get official certificates! 🎓",
+  "schedule|day|bootcamp|workflow": "📅 **Our Bootcamp Schedule:**\n\n📅 **Day 1: AI Foundation & Ideation + AI Story & Script Creation**\n• Learn AI concepts & ideation\n• Master AI story & script creation\n• Build your first AI project\n\n📅 **Day 2: AI Visual & Video Creation**\n• Create stunning visuals with AI\n• Generate videos using AI tools\n• Learn content creation techniques\n\n📅 **Day 3: Vibe Coding & Product Building**\n• Build complete AI product\n• Code your vibe with cutting-edge tools\n• Showcase to everyone! 🚀\n• Get official certificates! 🎓",
   "error|problem|bug|issue": "❌ Try refreshing page or re-login. Still stuck? Contact admin!",
   "help|how|what": "💡 Ask me: Attendance • Food • Login • Scanning • Schedule!",
   "thanks|thank you": "😊 You're welcome! Anything else I can help with?",
