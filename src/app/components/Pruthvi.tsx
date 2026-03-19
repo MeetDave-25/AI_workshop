@@ -230,7 +230,7 @@ export function Pruthvi() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-3 right-3 md:bottom-4 md:right-4 w-[calc(100vw-1.5rem)] md:w-full md:max-w-sm h-[50vh] sm:h-[48vh] md:max-h-[80vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
+            className="fixed bottom-3 right-3 md:bottom-4 md:right-4 w-[calc(100vw-1.5rem)] md:w-full md:max-w-sm h-[60vh] sm:h-[55vh] md:max-h-[90vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
           >
             {/* Header with Character */}
             <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-2 md:p-3 flex items-center justify-between gap-2">
@@ -282,7 +282,7 @@ export function Pruthvi() {
             </div>
 
             {/* Quick Question Buttons */}
-            <div className="px-2 md:px-3 py-2 bg-black/60 border-t border-cyan-400/20 max-h-[35vh] md:max-h-auto overflow-y-auto">
+            <div className="px-2 md:px-3 py-2 bg-black/60 border-t border-cyan-400/20 max-h-[20vh] md:max-h-24 overflow-y-auto flex-shrink-0">
               <p className="text-xs text-gray-400 mb-1.5 px-1 hidden md:block">Quick Questions:</p>
               <div className="grid grid-cols-2 md:grid-cols-2 gap-1 md:gap-2">
                 {QUICK_QUESTIONS.map((q, idx) => (
@@ -300,14 +300,14 @@ export function Pruthvi() {
             </div>
 
             {/* Input */}
-            <div className="border-t border-cyan-400/30 p-1.5 md:p-3 bg-black/70 flex gap-1 md:gap-2 items-center">
+            <div className="border-t border-cyan-400/30 p-2 md:p-3 bg-black/70 flex gap-1.5 md:gap-2 items-center flex-shrink-0">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                 placeholder="Type..."
-                className="flex-1 bg-white/10 border border-cyan-400/40 rounded-full px-3 py-1.5 md:px-4 md:py-2 text-white placeholder-gray-400 text-sm outline-none focus:border-cyan-400 focus:bg-white/15 transition-all"
+                className="flex-1 bg-white/10 border border-cyan-400/40 rounded-full px-3 py-2 md:px-4 md:py-2 text-white placeholder-gray-400 text-xs md:text-sm outline-none focus:border-cyan-400 focus:bg-white/15 transition-all"
               />
               <motion.button
                 onClick={handleSendMessage}
