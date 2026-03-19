@@ -184,7 +184,7 @@ export function Pruthvi() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 200, scale: 0.5 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 scale-75 md:scale-100 origin-bottom-right"
+            className="fixed bottom-3 right-3 md:bottom-4 md:right-4 z-40 scale-50 md:scale-60 origin-bottom-right"
           >
             <motion.button
               onClick={handleCharacterClick}
@@ -196,14 +196,14 @@ export function Pruthvi() {
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-28 h-28 md:w-36 md:h-36 cursor-pointer"
+                className="relative w-24 h-24 md:w-28 md:h-28 cursor-pointer"
               >
                 {/* Glow Effect */}
                 <div className="absolute inset-0 blur-xl bg-gradient-to-br from-cyan-400/30 to-blue-500/30 rounded-full" />
 
                 {/* Image Container */}
                 <img
-                  src="/p_ai.jpeg"
+                  src="/ai_pic.jpeg"
                   alt="Pruthvi"
                   className="w-full h-full rounded-full object-cover border-4 border-cyan-400 shadow-2xl shadow-cyan-500/50"
                 />
@@ -230,31 +230,31 @@ export function Pruthvi() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[calc(100vw-2rem)] md:w-full md:max-w-md h-[55vh] sm:h-[50vh] md:max-h-[85vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
+            className="fixed bottom-3 right-3 md:bottom-4 md:right-4 w-[calc(100vw-1.5rem)] md:w-full md:max-w-sm h-[50vh] sm:h-[48vh] md:max-h-[80vh] bg-gradient-to-b from-slate-900 via-blue-900/20 to-black border-3 border-cyan-400/50 rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50"
           >
             {/* Header with Character */}
-            <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-2 md:p-4 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+            <div className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 p-2 md:p-3 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 md:gap-2 min-w-0 flex-1">
                 {/* Mini Avatar */}
                 <motion.img
                   animate={{ rotate: [0, 5, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  src="/p_ai.jpeg"
+                  src="/ai_pic.jpeg"
                   alt="Pruthvi"
-                  className="w-10 md:w-14 h-10 md:h-14 rounded-full object-cover border-3 border-white shadow-lg flex-shrink-0"
+                  className="w-8 md:w-12 h-8 md:h-12 rounded-full object-cover border-3 border-white shadow-lg flex-shrink-0"
                 />
                 <div className="min-w-0">
-                  <h3 className="text-white font-bold text-sm md:text-lg truncate">Pruthvi</h3>
-                  <p className="text-xs text-cyan-100 truncate">AI Assistant</p>
+                  <h3 className="text-white font-bold text-xs md:text-base truncate">Pruthvi</h3>
+                  <p className="text-xs text-cyan-100 truncate hidden md:block">AI Assistant</p>
                 </div>
               </div>
               <motion.button
                 onClick={handleCloseChat}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white/20 hover:bg-white/30 rounded-full p-1.5 md:p-2 transition-all flex-shrink-0"
+                className="bg-white/20 hover:bg-white/30 rounded-full p-1 md:p-1.5 transition-all flex-shrink-0"
               >
-                <X className="w-4 md:w-5 h-4 md:h-5 text-white" />
+                <X className="w-3.5 md:w-4 h-3.5 md:h-4 text-white" />
               </motion.button>
             </div>
 

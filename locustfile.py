@@ -1,4 +1,4 @@
-from locust import HttpUser, task, between
+usfrom locust import HttpUser, task, between
 import random
 
 class WebsiteUser(HttpUser):

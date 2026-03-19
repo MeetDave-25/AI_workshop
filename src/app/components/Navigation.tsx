@@ -30,6 +30,18 @@ export function Navigation() {
     setIsOpen(false);
   };
 
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const href = e.currentTarget.getAttribute("href");
+    if (href?.startsWith("#")) {
+      e.preventDefault();
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        setIsOpen(false);
+      }
+    }
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -55,6 +67,7 @@ export function Navigation() {
               <a
                 key={item.href}
                 href={item.href}
+                onClick={handleSectionClick}
                 className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 relative group text-sm"
               >
                 {item.label}
@@ -131,7 +144,10 @@ export function Navigation() {
                 <motion.a
                   key={item.href}
                   href={item.href}
-                  onClick={handleNavClick}
+                  onClick={(e) => {
+                    handleSectionClick(e);
+                    handleNavClick();
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
