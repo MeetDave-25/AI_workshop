@@ -66,8 +66,8 @@ export function Navigation() {
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 group">
             <Sparkles className="w-6 h-6 text-cyan-400 group-hover:text-purple-400 transition-colors" />
-            <span className="text-xl bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
-              AI Bootcamp
+            <span className="text-xl font-bold bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
+              AiRA Labs
             </span>
           </a>
 
@@ -147,7 +147,7 @@ export function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/98 backdrop-blur-lg border-t-2 border-cyan-500/50 w-full relative z-40"
+            className="md:hidden bg-black/98 backdrop-blur-lg border-t-2 border-cyan-500/50 w-full absolute top-full left-0 z-40 max-h-[85vh] overflow-y-auto shadow-2xl"
           >
             <div className="px-4 py-6 space-y-3 max-w-7xl mx-auto">
               {navItems.map((item, index) => (

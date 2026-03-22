@@ -23,7 +23,7 @@ const teamMembers: TeamMember[] = [
     {
         name: "Parth Parmar",
         role: "Co-Instructor",
-        specialty: "Character Generation",
+        specialty: "Cinematography & Character Generation",
         initials: "PP",
         gradient: "from-cyan-400 to-blue-500",
         image: "/parth_p.jpeg",
@@ -31,7 +31,7 @@ const teamMembers: TeamMember[] = [
     {
         name: "Meet Dave",
         role: "Co-Instructor",
-        specialty: "Vibe-coding",
+        specialty: "Vibe coding & Tech Wing Head",
         initials: "MD",
         gradient: "from-purple-400 to-pink-500",
         image: "/meet.jpeg",
