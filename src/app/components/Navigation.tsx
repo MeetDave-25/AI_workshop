@@ -67,7 +67,7 @@ export function Navigation() {
           <a href="/" className="flex items-center gap-2 group">
             <Sparkles className="w-6 h-6 text-cyan-400 group-hover:text-purple-400 transition-colors" />
             <span className="text-xl font-bold bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
-              AiRA Labs
+              AiRA Lab
             </span>
           </a>
 
