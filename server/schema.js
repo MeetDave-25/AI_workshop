@@ -54,6 +54,16 @@ export async function initDB() {
         created_at TIMESTAMP DEFAULT NOW()
       );
 
+      CREATE TABLE IF NOT EXISTS materials (
+        id SERIAL PRIMARY KEY,
+        material_id VARCHAR(100) UNIQUE NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        category VARCHAR(100) NOT NULL,
+        link TEXT NOT NULL,
+        is_visible BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+
       CREATE TABLE IF NOT EXISTS generation_status (
         id SERIAL PRIMARY KEY,
         day INTEGER NOT NULL CHECK (day >= 1 AND day <= 3),

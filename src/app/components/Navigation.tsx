@@ -3,6 +3,12 @@ import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "../context/AuthContext";
 import { Menu, X, Sparkles, User, LogOut, Shield, MessageCircle } from "lucide-react";
 
+declare global {
+  interface Window {
+    openPruthviChat?: () => void;
+  }
+}
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,6 +27,7 @@ export function Navigation() {
     { label: "Workflow", href: "#workflow" },
     { label: "Tools", href: "#tools" },
     { label: "Prompts", href: "#prompts" },
+    { label: "Materials", href: "#materials" },
     { label: "Coupon", href: "#coupon" },
     { label: "Team", href: "#team" },
     { label: "Certification", href: "#certification" },

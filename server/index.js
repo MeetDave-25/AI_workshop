@@ -371,8 +371,71 @@ app.delete("/api/prompts/:id", async (req, res) => {
     }
 });
 
-// --- GENERATION STATUS CONTROL ---
+// --- MATERIALS ---
 
+app.get("/api/materials", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM materials ORDER BY created_at DESC");
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching materials" });
+    }
+});
+
+app.get("/api/materials/visible", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM materials WHERE is_visible = true ORDER BY created_at DESC");
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching visible materials" });
+    }
+});
+
+app.post("/api/materials", async (req, res) => {
+    const { title, category, link } = req.body;
+    const material_id = `MAT-${Date.now()}`;
+
+    try {
+        const result = await pool.query(
+            "INSERT INTO materials (material_id, title, category, link) VALUES ($1, $2, $3, $4) RETURNING *",
+            [material_id, title, category, link]
+        );
+        res.json({ success: true, material: result.rows[0] });
+    } catch (err) {
+        res.status(500).json({ message: "Error creating material" });
+    }
+});
+
+app.put("/api/materials/:id", async (req, res) => {
+    const { id } = req.params;
+    const { title, category, link, is_visible } = req.body;
+
+    // Handle string or boolean for is_visible
+    const visibleFlag = is_visible === true || is_visible === 'true';
+
+    try {
+        const result = await pool.query(
+            "UPDATE materials SET title = $1, category = $2, link = $3, is_visible = $4 WHERE material_id = $5 RETURNING *",
+            [title, category, link, visibleFlag, id]
+        );
+        res.json({ success: true, material: result.rows[0] });
+    } catch (err) {
+        res.status(500).json({ message: "Error updating material" });
+    }
+});
+
+app.delete("/api/materials/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await pool.query("DELETE FROM materials WHERE material_id = $1", [id]);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ message: "Error deleting material" });
+    }
+});
+
+// --- GENERATION STATUS CONTROL ---
 app.get("/api/generation-status", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM generation_status ORDER BY day ASC");
@@ -385,17 +448,17 @@ app.get("/api/generation-status", async (req, res) => {
 
 app.get("/api/generation-status/check/:day/:type", async (req, res) => {
     const { day, type } = req.params;
-    
+
     try {
         const result = await pool.query("SELECT * FROM generation_status WHERE day = $1", [parseInt(day)]);
-        
+
         if (result.rows.length === 0) {
             return res.json({ enabled: false });
         }
 
         const status = result.rows[0];
         const fieldName = type === "ticket" ? "ticket_generation_enabled" : "coupon_generation_enabled";
-        
+
         res.json({ enabled: status[fieldName] || false });
     } catch (err) {
         console.error(err);
@@ -409,7 +472,7 @@ app.post("/api/admin/generation-status/:day/:type", async (req, res) => {
 
     try {
         const fieldName = type === "ticket" ? "ticket_generation_enabled" : "coupon_generation_enabled";
-        
+
         const result = await pool.query(
             `INSERT INTO generation_status (day, ${fieldName}, updated_at, updated_by) 
              VALUES ($1, $2, NOW(), 'admin')
@@ -431,7 +494,7 @@ async function startServer() {
     try {
         // Initialize database tables
         await initDB();
-        
+
         if (process.env.NODE_ENV !== "production") {
             app.listen(PORT, () => {
                 console.log(`🚀 API Server running on http://localhost:${PORT}`);

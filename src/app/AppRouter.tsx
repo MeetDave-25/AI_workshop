@@ -4,6 +4,7 @@ import { LoginPage } from "./components/LoginPage";
 import { AdminDashboard } from "./components/AdminDashboard";
 import { AdminScanner } from "./components/AdminScanner";
 import { AdminPrompts } from "./components/AdminPrompts";
+import { AdminMaterials } from "./components/AdminMaterials";
 import { AdminStudents } from "./components/AdminStudents";
 
 export function AppRouter() {
@@ -14,6 +15,7 @@ export function AppRouter() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/scanner" element={<AdminScanner />} />
             <Route path="/admin/prompts" element={<AdminPrompts />} />
+            <Route path="/admin/materials" element={<AdminMaterials />} />
             <Route path="/admin/students" element={<AdminStudents />} />
         </Routes>
     );

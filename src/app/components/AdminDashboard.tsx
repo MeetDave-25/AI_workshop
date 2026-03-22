@@ -12,6 +12,7 @@ import {
     LogOut,
     Users,
     Download,
+    FolderOpen,
 } from "lucide-react";
 import * as XLSX from "xlsx";
 import { AdminGenerationControl } from "./AdminGenerationControl";
@@ -104,6 +105,14 @@ export function AdminDashboard() {
             gradient: "from-purple-400 to-pink-500",
             shadowColor: "shadow-purple-500/20",
             path: "/admin/prompts",
+        },
+        {
+            title: "Materials",
+            description: "Upload & share Google links",
+            icon: FolderOpen,
+            gradient: "from-green-400 to-emerald-500",
+            shadowColor: "shadow-green-500/20",
+            path: "/admin/materials",
         },
         {
             title: "Student Management",

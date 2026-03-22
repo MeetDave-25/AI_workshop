@@ -8,6 +8,7 @@ import { Certification } from "./Certification";
 import { AttendanceTicket } from "./AttendanceTicket";
 import { FoodCoupon } from "./FoodCoupon";
 import { PromptsSection } from "./PromptsSection";
+import { MaterialsSection } from "./MaterialsSection";
 import { Team } from "./Team";
 import { Footer } from "./Footer";
 import { Navigation } from "./Navigation";
@@ -34,6 +35,7 @@ export function LandingPage() {
             <div id="prompts">
                 <PromptsSection />
             </div>
+            <MaterialsSection />
             <AttendanceTicket />
             <div id="coupon">
                 <FoodCoupon />
