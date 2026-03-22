@@ -31,7 +31,7 @@ const teamMembers: TeamMember[] = [
     {
         name: "Meet Dave",
         role: "Co-Instructor",
-        specialty: "Vibe coding & Tech Wing Head",
+        specialty: "Tech Wing Head & Vibe Coding",
         initials: "MD",
         gradient: "from-purple-400 to-pink-500",
         image: "/meet.jpeg",
